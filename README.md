@@ -1,4 +1,4 @@
-# blah2
+# blah2-rp5
 
 This is fork of blah2, modified to run on a Raspberry Pi 5.
 
