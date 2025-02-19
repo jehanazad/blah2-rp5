@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y \
     doxygen \
     graphviz \
     expect \
-    librtlsdr-dev \
     libfftw3-dev \
     pkg-config \
     gfortran \
@@ -85,14 +84,8 @@ RUN export ARCH=$(uname -m) \
 # install UHD API
 RUN uhd_images_downloader
 
-# install RTL-SDR API
-RUN git clone https://github.com/krakenrf/librtlsdr /opt/librtlsdr \
-    && cd /opt/librtlsdr && mkdir build && cd build \
-    && cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON && make && make install && ldconfig
-
-
 FROM blah2_env as blah2
-LABEL maintainer="30hours <nathan@30hours.dev>"
+LABEL maintainer="Jehan <jehan.azad@gmail.com>"
 
 WORKDIR /opt/blah2
 
