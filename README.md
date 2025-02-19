@@ -135,6 +135,8 @@ sudo apt install graphviz
 
 `sudo systemctl enable docker`
 
+`cd /opt/blah2`
+
 `sudo docker compose up -d --build`
 
 The radar processing output is available on [http://localhost:49152](http://localhost:49152).
