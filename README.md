@@ -112,23 +112,25 @@ Check Docker-Compose:
 sudo apt install graphviz
 ```
 
-The following commands will:
-- Clone this repository to some directory.
-- Install SDRplay API to run service on host.
-- Edit the `config/config.yml` for desired processing parameters.
-- Run the docker-compose command.
-
-```bash
+# 1. Clone the repository and adjust permissions:
 sudo git clone https://github.com/jehanazad/blah2-rp5 /opt/blah2
 cd /opt/blah2
 sudo chown -R $USER .
-sudo chmod a+x ./lib/sdrplay-3.15.2/SDRplay_RSP_API-Linux-3.15.2.run
-sudo ./lib/sdrplay-3.15.2/SDRplay_RSP_API-Linux-3.15.2.run --tar -xvf -C ./lib/sdrplay-3.15.2
-cd lib/sdrplay-3.15.2/ && sudo ./install_lib.sh && cd ../../
+
+# 2. Copy the SDRplay installer to your home directory:
+cp lib/sdrplay-3.15.2/SDRplay_RSP_API-Linux-3.15.2.run ~/
+
+# 3. Change to your home directory:
+cd ~
+
+# 4. Make the SDRplay installer executable and run it:
+chmod +x SDRplay_RSP_API-Linux-3.15.2.run
+sudo ./SDRplay_RSP_API-Linux-3.15.2.run
+
+# 5. Set up Docker (including creating the 'blah2' network):
 sudo docker network create blah2
 sudo systemctl enable docker
 sudo docker compose up -d --build
-```
 
 The radar processing output is available on [http://localhost:49152](http://localhost:49152).
 
