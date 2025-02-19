@@ -112,22 +112,27 @@ Check Docker-Compose:
 sudo apt install graphviz
 ```
 
-** 1. Clone the repository and adjust permissions:**
+**1. Clone the repository and adjust permissions:**
+
 `sudo git clone https://github.com/jehanazad/blah2-rp5 /opt/blah2`
 `cd /opt/blah2`
 `sudo chown -R $USER .`
 
-** 2. Copy the SDRplay installer to your home directory:**
+**2. Copy the SDRplay installer to your home directory:**
+
 `cp lib/sdrplay-3.15.2/SDRplay_RSP_API-Linux-3.15.2.run ~/`
 
-** 3. Change to your home directory:**
+**3. Change to your home directory:**
+
 `cd ~`
 
-** 4. Make the SDRplay installer executable and run it:**
+**4. Make the SDRplay installer executable and run it:**
+
 `chmod +x SDRplay_RSP_API-Linux-3.15.2.run`
 `sudo ./SDRplay_RSP_API-Linux-3.15.2.run`
 
-** 5. Set up Docker (including creating the 'blah2' network):**
+**5. Set up Docker (including creating the 'blah2' network):**
+
 `sudo docker network create blah2`
 `sudo systemctl enable docker`
 `sudo docker compose up -d --build`
