@@ -17,7 +17,7 @@ services:
       - /opt/blah2/config:/opt/blah2/config
       - /opt/blah2/save:/opt/blah2/save
       - /dev/shm:/dev/shm:rw
-      - /dev/usb:/dev/usb:rw
+       - /dev/bus/usb:/dev/bus/usb:rw
       - /usr/local/lib/libsdrplay_api.so.3.15:/usr/local/lib/libsdrplay_api.so.3
 
     network_mode: host
