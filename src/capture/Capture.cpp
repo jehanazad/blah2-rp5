@@ -2,6 +2,7 @@
 #include "rspduo/RspDuo.h"
 #include "usrp/Usrp.h"
 #include "hackrf/HackRf.h"
+#include "pluto/Pluto.h"
 #include <iostream>
 #include <thread>
 #include <httplib.h>
@@ -134,6 +135,25 @@ std::unique_ptr<Source> Capture::factory_source(const std::string& type, c4::yml
       ampEnable.push_back(_ampEnable);
       return std::make_unique<HackRf>(type, fc, fs, path, &saveIq,
         serial, gainLna, gainVga, ampEnable);
+    }
+
+    // Pluto+ SDR
+    else if (type == VALID_TYPE[3])
+    {
+        std::string uri;
+        std::string gain_mode;
+        int gain_rx;
+        std::string rf_port;
+        uint32_t bandwidth;
+        
+        config["uri"] >> uri;
+        config["gain_mode"] >> gain_mode;
+        config["gain_rx"] >> gain_rx;
+        config["rf_port"] >> rf_port;
+        config["bandwidth"] >> bandwidth;
+        
+        return std::make_unique<Pluto>(type, fc, fs, path, &saveIq,
+            uri, gain_mode, gain_rx, rf_port, bandwidth);
     }
 
     // handle unknown type
