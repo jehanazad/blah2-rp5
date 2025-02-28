@@ -1,0 +1,86 @@
+capture:
+  fs: 2000000
+  fc: 100000000
+  device:
+    type: "Pluto"
+    uri: "ip:192.168.2.1"
+    gain_mode: "manual"
+    gain_rx: 50
+    rf_port: "A_BALANCED"
+    bandwidth: 250000
+  replay:
+    state: false
+    loop: true
+    file: '/opt/blah2/replay/file.pluto'
+
+process:
+  data:
+    cpi: 0.5
+    buffer: 1.5
+    overlap: 0
+  ambiguity:
+    delayMin: -10
+    delayMax: 400
+    dopplerMin: -200
+    dopplerMax: 200
+  clutter:
+    enable: true
+    delayMin: -10
+    delayMax: 400
+  detection:
+    enable: true
+    pfa: 0.00001
+    nGuard: 2
+    nTrain: 6
+    minDelay: 5
+    minDoppler: 15
+    nCentroid: 6
+  tracker:
+    enable: true
+    initiate:
+      M: 3
+      N: 5
+      maxAcc: 10
+    delete: 10
+    smooth: "none"
+
+network:
+  ip: 0.0.0.0
+  ports:
+    api: 3000
+    map: 3001
+    detection: 3002
+    track: 3003
+    timestamp: 4000
+    timing: 4001
+    iqdata: 4002
+    config: 4003
+
+truth:
+  adsb:
+    enabled: false
+    tar1090: 'adsb.30hours.dev'
+    adsb2dd: 'adsb2dd.30hours.dev'
+  ais:
+    enabled: false
+    ip: 0.0.0.0
+    port: 30001
+
+location:
+  rx:
+    latitude: 51.5280
+    longitude: -0.0846
+    altitude: 21
+    name: "London"
+  tx:
+    latitude: 51.4098
+    longitude: -0.0861
+    altitude: 120
+    name: "Croydon Transmitting Station"
+
+save:
+  iq: true
+  map: false
+  detection: false
+  timing: false
+  path: "/blah2/save/"
