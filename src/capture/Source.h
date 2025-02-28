@@ -1,89 +1,75 @@
-/// @file Source.h
-/// @class Source
-/// @brief An abstract class for capture sources.
-/// @author 30hours
+#include "Source.h"
 
-#ifndef SOURCE_H
-#define SOURCE_H
+#include <iostream>
+#include <algorithm>
+#include <chrono>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 
-#include <string>
-#include <stdint.h>
-#include <fstream>
-#include <atomic>
-#include "data/IqData.h"
-
-class Source
+Source::Source()
 {
-protected:
+}
 
-  /// @brief The capture device type.
-  std::string type;
+// constructor
+Source::Source(std::string _type, uint32_t _fc, uint32_t _fs, 
+    std::string _path, bool *_saveIq)
+{
+  type = _type;
+  fc = _fc;
+  fs = _fs;
+  path = _path;
+  saveIq = _saveIq;
+}
 
-  /// @brief Center frequency (Hz).
-  uint32_t fc;
+std::string Source::open_file()
+{
+  // get string of timestamp in YYYYmmdd-HHMMSS
+  auto currentTime = std::chrono::system_clock::to_time_t(
+    std::chrono::system_clock::now());
+  std::tm* timeInfo = std::localtime(&currentTime);
+  std::ostringstream oss;
+  oss << std::put_time(timeInfo, "%Y%m%d-%H%M%S");
+  std::string timestamp = oss.str();
 
-  /// @brief Sampling frequency (Hz).
-  uint32_t fs;
+  // create file path
+  std::string typeLower = type;
+  std::transform(typeLower.begin(), typeLower.end(), 
+    typeLower.begin(), ::tolower);
+  std::string file = path + timestamp + "." + typeLower + ".iq";
 
-  /// @brief Absolute path to IQ save location.
-  std::string path;
+  saveIqFile.open(file, std::ios::binary);
 
-  /// @brief True if IQ data to be saved.
-  bool *saveIq;
+  if (!saveIqFile.is_open())
+  {
+    std::cerr << "Error: Can not open file: " << file << std::endl;
+    exit(1);
+  }
+  std::cout << "Ready to record IQ to file: " << file << std::endl;
 
-  /// @brief File stream to save IQ data.
-  std::ofstream saveIqFile;
+  return file;
+}
 
-public:
+void Source::close_file()
+{
+  if (!saveIqFile.is_open())
+  {
+    saveIqFile.close();
+  }
 
-  Source();
+  // switch member with blank file stream
+  std::ofstream blankFile;
+  std::swap(saveIqFile, blankFile);
+}
 
-  /// @brief Constructor.
-  /// @param type The capture device type.
-  /// @param fs Sampling frequency (Hz).
-  /// @param fc Center frequency (Hz).
-  /// @param path Absolute path to IQ save location.
-  /// @return The object.
-  Source(std::string type, uint32_t fc, uint32_t fs, 
-    std::string path, bool *saveIq);
-
-  /// @brief Implement the capture process.
-  /// @param buffer1 Buffer for reference samples.
-  /// @param buffer2 Buffer for surveillance samples.
-  /// @return Void.
-  virtual void process(IqData *buffer1, IqData *buffer2) = 0;
-
-  /// @brief Call methods to start capture.
-  /// @return Void.
-  virtual void start() = 0;
-
-  /// @brief Call methods to gracefully stop capture.
-  /// @return Void.
-  virtual void stop() = 0;
-
-  /// @brief Implement replay function on RSPduo.
-  /// @param buffer1 Pointer to reference buffer.
-  /// @param buffer2 Pointer to surveillance buffer.
-  /// @param file Path to file to replay data from.
-  /// @param loop True if samples should loop at EOF.
-  /// @return Void.
-  virtual void replay(IqData *buffer1, IqData *buffer2, 
-    std::string file, bool loop) = 0;
-
-  /// @brief Open a new file to record IQ.
-  /// @details First creates a new file from current timestamp.
-  /// Files are of format <path>.<type>.iq.
-  /// @return String of full path to file.
-  std::string open_file();
-
-  /// @brief Close IQ file gracefully.
-  /// @return Void.
-  void close_file();
-
-  /// @brief Graceful handler for SIGTERM.
-  /// @return Void.
-  void kill();
-
-};
-
-#endif
+void Source::kill()
+{
+  if (type == "RspDuo")
+  {
+    stop();
+  } else if (type == "HackRF")
+  {
+    stop();
+  }
+  exit(0);
+}
