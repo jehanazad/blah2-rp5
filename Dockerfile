@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     libhackrf-dev \
     libusb-dev \
     libusb-1.0.0-dev \
+    libiio-dev \
     python3-pip \
     python3-mako \
     python3-numpy \
