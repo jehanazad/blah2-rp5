@@ -55,8 +55,8 @@ Install dependencies required to add Docker’s repository:
 
 Add Docker’s GPG key to ensure downloads are trusted:
 
-`sudo install -m 0755 -d /etc/apt/keyrings 
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg sudo chmod a+r /etc/apt/keyrings/docker.gpg`
+`sudo install -m 0755 -d /etc/apt/keyrings` 
+`curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg sudo chmod a+r /etc/apt/keyrings/docker.gpg`
 
 **Step 4: Add Docker’s Repository**
 
