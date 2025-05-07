@@ -145,6 +145,8 @@ sudo apt install graphviz
 
 The radar processing output is available on [http://localhost:49152](http://localhost:49152).
 
+Note - if you get a blank green output for the Delay-Doppler, you may have to update your firewall rules to see the output.
+
 ## Documentation
 
 - See `doxygen` pages hosted at [http://doc.30hours.dev/blah2](http://doc.30hours.dev/blah2).
